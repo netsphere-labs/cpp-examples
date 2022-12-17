@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <!-- object 要素ではない. 手書き -->
+  <menu id="menubar">
+    <submenu>
+      <attribute name="label" translatable="yes">_File</attribute>
+      <section>
+        <item>
+          <attribute name="label" translatable="yes">_Quit</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label" translatable="yes">_Help</attribute>
+      <section>
+        <item>
+          <attribute name="label" translatable="yes">_About</attribute>
+          <attribute name="action">app.about</attribute>
+        </item>
+      </section>
+    </submenu>
+  </menu>
+</interface>

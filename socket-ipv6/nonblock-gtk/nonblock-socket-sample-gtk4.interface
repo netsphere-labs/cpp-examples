@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GTK4: XMLの手書きが強要される。 -->
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <object id="window" class="GtkApplicationWindow">
+    <property name="title" translatable="yes">Non-blocking Socket Sample</property>
+    <property name="show-menubar">1</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+<!-- GtkMenuBar has been gone. 
+     Gio-2.0 Menu クラスを代わりに使え。 -->          
+        <child>
+          <object id="textView" class="GtkTextView">
+            <property name="vexpand">1</property>
+            <property name="focusable">1</property>
+            <property name="wrap-mode">char</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <child>
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">Host:</property>
+              </object>
+            </child>
+            <child>
+              <object id="hostEntry" class="GtkEntry">
+                <property name="focusable">1</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">Port:</property>
+              </object>
+            </child>
+            <child>
+              <object id="portEntry" class="GtkEntry">
+                <property name="focusable">1</property>
+              </object>
+            </child>
+            <child>
+              <object id="getButton" class="GtkButton">
+                <property name="label" translatable="yes">Get Fortune</property>
+                <property name="focusable">1</property>
+                <property name="receives-default">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStatusbar">
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
