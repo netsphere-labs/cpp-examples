@@ -1,4 +1,9 @@
 
+# backup files
 *~
 *.bak
 *.o
+*.a
+
+CMakeFiles/
+CMakeCache.txt
