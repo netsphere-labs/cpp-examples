@@ -28,7 +28,7 @@ public slots:
     void turnOn() { setOn(true); }
 
 protected:
-    void paintEvent(QPaintEvent *) override;
+    virtual void paintEvent(QPaintEvent *) override;
 
 private:
     QColor m_color;
@@ -37,6 +37,7 @@ private:
 //! [0]
 
 
+// 信号機
 class TrafficLightWidget : public QWidget
 {
     Q_OBJECT
@@ -51,9 +52,9 @@ public:
         { return m_green; }
 
 private:
-    LightWidget *m_red;
-    LightWidget *m_yellow;
-    LightWidget *m_green;
+    LightWidget* m_red;
+    LightWidget* m_yellow;
+    LightWidget* m_green;
 
 signals:
 

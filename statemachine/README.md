@@ -3,7 +3,7 @@
 UML 1.5 では statechart diagram という名前だった. UML2 で StateMachines パッケージに名前変更。
 
 
-## qt-trafficlight-handwritten
+## qt-trafficlight-handwritten/
 
 状態遷移のサンプル。Qt5/Qt6 両対応. これをベースにした; <a href="https://doc.qt.io/qt-6/qtstatemachine-statemachine-trafficlight-example.html">Traffic Light Example | Qt State Machine 6.4.1</a>
 
@@ -16,11 +16,17 @@ Qt の状態遷移は signal & slot の仕組みを活用しており、タイ�
 状態遷移図を手書きで実装すべきではない。穴が開いているかどうかまるで分からない。Qt は scxml をインポートしてそのまま実行できるので、GUI で状態遷移図を描くとよい。
 
 
-
-
-## boost-ext-sml
+## boost-ext-sml/
 
 Based on https://github.com/ubeh/fsm_examples/
+
+
+## qt-trafficlight-scxml-dynamic/
+
+Based on https://doc.qt.io/qt-6/qtscxml-trafficlight-widgets-dynamic-example.html
+
+SCXML ファイルをそのまま利用する。Qt5/Qt6 両対応。
+
 
 
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="TrafficLightStateMachine" qt:editorversion="8.0.1" initial="working">
+    <qt:editorinfo initialGeometry="-375.11;-600.04;-20;-20;40;40"/>
+    <state id="working" initial="yellow">
+        <qt:editorinfo scenegeometry="0;-290;-376.61;-559.35;461.61;587.29" geometry="0;-290;-376.61;-269.35;461.61;587.29"/>
+        <state id="red">
+            <qt:editorinfo scenegeometry="0;-380;-60;-430;120;100" geometry="0;-90;-60;-50;120;100"/>
+            <onentry>
+                <send event="startGoingGreen" delay="3s"/>
+            </onentry>
+            <transition type="internal" event="startGoingGreen" target="redGoingGreen"/>
+        </state>
+        <state id="yellow" initial="greenGoingRed">
+            <qt:editorinfo scenegeometry="-209;-286.88;-344.11;-484.11;234.66;287.23" geometry="-209;3.12;-135.11;-197.23;234.66;287.23"/>
+            <state id="redGoingGreen">
+                <qt:editorinfo scenegeometry="-170;-380;-249.55;-430;159.09;100" geometry="0;-90;-79.55;-50;159.09;100"/>
+                <onentry>
+                    <send event="goGreen" delay="1s"/>
+                </onentry>
+                <transition type="internal" event="goGreen" target="green"/>
+            </state>
+            <state id="greenGoingRed">
+                <qt:editorinfo scenegeometry="-204.64;-270;-285.11;-320;160.94;100" geometry="-34.64;20;-80.47;-50;160.94;100"/>
+                <onentry>
+                    <send event="goRed" delay="1s"/>
+                </onentry>
+                <transition type="internal" event="goRed" target="red"/>
+            </state>
+        </state>
+        <state id="green">
+            <qt:editorinfo scenegeometry="0;-240;-60;-290;120;100" geometry="0;50;-60;-50;120;100"/>
+            <onentry>
+                <send event="startGoingRed" delay="3s"/>
+            </onentry>
+            <transition type="internal" event="startGoingRed" target="greenGoingRed"/>
+        </state>
+        <transition type="internal" event="smash" target="broken"/>
+    </state>
+    <state id="broken" initial="blinking">
+        <qt:editorinfo scenegeometry="480.13;-37.71;363.96;-234.94;196.17;287.23" geometry="480.13;-37.71;-116.17;-197.23;196.17;287.23"/>
+        <state id="blinking">
+            <qt:editorinfo scenegeometry="-34.64;-70;-94.64;-120;120;100" geometry="0;-90;-60;-50;120;100"/>
+            <onentry>
+                <send event="unblink" delay="1s"/>
+            </onentry>
+            <transition type="internal" event="unblink" target="unblinking"/>
+        </state>
+        <state id="unblinking">
+            <qt:editorinfo scenegeometry="-69.28;40;-130.81;-10;123.06;100" geometry="-34.64;20;-61.53;-50;123.06;100"/>
+            <onentry>
+                <send event="blink" delay="1s"/>
+            </onentry>
+            <transition type="internal" event="blink" target="blinking"/>
+        </state>
+        <transition type="internal" event="repair" target="working"/>
+    </state>
+</scxml>

@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="background.png">resources/background.png</file>
+    <file alias="green.png">resources/green.png</file>
+    <file alias="yellow.png">resources/yellow.png</file>
+    <file alias="red.png">resources/red.png</file>
+    <file alias="pause.png">resources/pause.png</file>
+    <file alias="play.png">resources/play.png</file>
+    <file alias="statemachine.scxml">resources/statemachine.scxml</file>
+  </qresource>
+</RCC>

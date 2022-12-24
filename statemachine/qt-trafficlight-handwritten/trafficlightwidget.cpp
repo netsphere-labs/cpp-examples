@@ -3,6 +3,10 @@
 #include <QPainter>
 #include "trafficlightwidget.h"
 
+//////////////////////////////////////////////////////////////
+// LightWidget class
+
+// override
 void LightWidget::paintEvent(QPaintEvent *)
 {
     if (!m_on)
@@ -14,8 +18,12 @@ void LightWidget::paintEvent(QPaintEvent *)
 }
 
 
+
+//////////////////////////////////////////////////////////////
+// TrafficLightWidget class
+
 TrafficLightWidget::TrafficLightWidget(QWidget *parent)
-    : QWidget{parent}
+    : QWidget(parent)
 {
     QVBoxLayout *vbox = new QVBoxLayout(this);
     m_red = new LightWidget(Qt::red);
