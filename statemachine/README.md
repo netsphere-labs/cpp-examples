@@ -2,62 +2,110 @@
 
 UML 1.5 では statechart diagram という名前だった. UML2 で StateMachines パッケージに名前変更。
 
+## サンプルプログラム
 
-## qt-trafficlight-handwritten/
+### `qt-trafficlight-handwritten/`
 
 状態遷移のサンプル。Qt5/Qt6 両対応. これをベースにした; <a href="https://doc.qt.io/qt-6/qtstatemachine-statemachine-trafficlight-example.html">Traffic Light Example | Qt State Machine 6.4.1</a>
 
-状態 (state) が X のときにイベント E が発生すると, 次の状態 Y に遷移する、と定義していく。
+状態 (state) が X のときにイベント E が発生すると, 次の状態 Y に遷移する、と定義していく。状態は `QState` クラスインスタンスとする。`addTransition()` メソッドでイベントと遷移先を登録する。
 
 このサンプルでは, 黄色信号は赤に行くこともあれば青に行くこともある。遷移させるイベントはいずれも timeout. イベントが同じなのに行き先が二つ以上の場合は、状態を二つに分けてやる。
 
-Qt の状態遷移は signal & slot の仕組みを活用しており、タイムアウトや他のイベント (ボタンを押したなど) も統一的に扱える。他方、Qt イベントループへの登録が前提になっており、かなり重い処理になっている。
+Qt の状態遷移は signal &amp; slot の仕組みを活用しており、タイムアウトや他のイベント (ボタンを押したなど) も統一的に扱える。他方、Qt イベントループへの登録が前提になっており、かなり重い処理になっている。
 
-状態遷移図を手書きで実装すべきではない。穴が開いているかどうかまるで分からない。Qt は scxml をインポートしてそのまま実行できるので、GUI で状態遷移図を描くとよい。
+状態遷移図を手書きで実装すべきではない。穴が開いているかどうかまるで分からない。Qt は SCXML をインポートしてそのまま実行できるので、GUI で状態遷移図を描くとよい。
 
 
-## boost-ext-sml/
+
+### `qt-trafficlight-scxml-dynamic/`
+
+Qt5/Qt6 両対応。SCXML ファイルをそのまま利用する信号機サンプル。Based on https://doc.qt.io/qt-6/qtscxml-trafficlight-widgets-dynamic-example.html
+
+SCXML は状態遷移図の交換用フォーマット。<a href="https://alexzhornyak.github.io/SCXML-tutorial/">SCXML-tutorial | SCXML illustrated examples and tutorials</a>. Qt Creator は GUI で編集できる。
+
+このサンプルは, SCXML をコンパイルせずに、そのまま読み込む。`QScxmlStateMachine` クラスインスタンスが SCXML の内容を保持する。`connectToState()` メソッドでコールバック関数を登録する。コールバック関数は, 次の宣言のように, `bool` 型の引数を持つこと。
+
+```c++
+  void mySlot(bool active);
+```
+
+SCXML は <code>&lt;send event="startGoingGreen" delay="3s" /&gt;</code> のようにタイムアウトをこの中で書けるため、インタプリタは必然的にイベントループを必要とする。
+
+
+
+
+
+### `boost-ext-sml/`
 
 Based on https://github.com/ubeh/fsm_examples/
 
-
-## qt-trafficlight-scxml-dynamic/
-
-Based on https://doc.qt.io/qt-6/qtscxml-trafficlight-widgets-dynamic-example.html
-
-SCXML ファイルをそのまま利用する。Qt5/Qt6 両対応。
+[Boost::ext].SML は軽量な状態機械ライブラリでメジャー。名前が紛らわしいが、Boost の一部ではなく, Boost には依存しない。SML では state はクラスではない。コードを書きたい場合は, action でコールバックさせるぐらい。
 
 
 
 
+### `sml-visualize/`
+
+SML の状態遷移のコード定義を PlantUML のテキストとして出力する。これそのまま; https://github.com/boost-ext/sml/blob/master/example/plant_uml.cpp
+
+コンパイルには C++17 が必要 (C++14 には `if constexpr` がない). Template metaprogramming (TMP) の権化みたいなコードになっている。正直, 可変長テンプレート引数は理解の範囲を超える.
 
 
 
-## 軽量な有限状態機械 (Finite State Machine; FSM) ライブラリ
 
-`QStateMachine` は, 1クラスのなかで状態を管理したいといったような, 軽い用途には使いにくい。軽量ライブラリを探した。山のようにあるが、まぁまぁ人気のものを挙げる。
+
+## 有限状態機械 (Finite State Machine; FSM) ライブラリ
+
+`QStateMachine` は, 1クラスのなかで状態を管理したいといったような, 軽い用途には使いにくい。状態機械ライブラリを探した。山のようにあるが、まぁまぁ人気のものを挙げる。
+
+UML2 では, <i>behavior (behavioural) state machines</i> and <i>protocol state machines</i> という区分を挙げている。求められる機能性の違いは微妙だが、前者は状態が動名詞になりやすい。State が内部状態や振る舞いを持つため, クラスとして定義できたほうがよいようだ。
+
+
+
+### 軽量ライブラリ
 
 <table>
   <tr><td>☆ <a href="https://boost-ext.github.io/sml/">[Boost::ext].SML</a>
-    <td>軽量なもののなかでメジャー。<i>Boost.Statechart</i> はパフォーマンスが悪く, Boost Meta State Machine (MSM) はコンパイルの時間・メモリを大量に食う。
-しかし, C++ の超絶技巧を駆使しており、エラーが出た場合など、挙動がさっぱり分からない。
+    <td><i>Boost.Statechart</i> はパフォーマンスが悪く, Boost Meta State Machine (MSM) はコンパイルの時間・メモリを大量に食う。SML は, パフォーマンスは MSM 並で、コンパイルが多少は軽くなっている。
+しかし, C++ の超絶技巧を駆使しており、エラーが出た場合など挙動がさっぱり分からないのが傷。
 
-  <tr><td>○ <a href="https://github.com/erikzenker/hsm/">Hana State Machine (HSM)</a> 
-    <td>[Boost::ext].SML と Boost.MSM の実装の仕方を Boost.Hana で再実装し, 独自のメタプログラミングコードの大きさを縮小。パフォーマンス傾向は MSM に似ている。なかなかいい。
+  <tr><td>▲ <a href="https://github.com/erikzenker/hsm/">Hana State Machine (HSM)</a> 
+    <td>[Boost::ext].SML と Boost.MSM の実装の仕方を Boost.Hana で再実装し, 独自のメタプログラミングコードの大きさを縮小。パフォーマンス傾向は MSM に似ている。悪くない。しかし, 黒魔術であることには変わらないので, SML を使えばよい。
 
+  <tr><td>☆ <a href="https://github.com/digint/tinyfsm/">TinyFSM</a>
+    <td>イベントがクラス. `tinyfsm::Event` から派生させる。状態もクラス. <code>tinyfsm::Fsm&lt;&gt;</code> クラスを派生させてFSM base class を定義し、そこから各状態クラスを派生させる。
 
-  <tr><td>○ <a href="https://github.com/digint/tinyfsm/">TinyFSM</a>
-    <td>イベントがクラス.
-▲direct transition <code>transit&lt;<var>stateClass</var>&gt;()</code>
+      ▲direct transition <code>transit&lt;<var>stateClass</var>&gt;()</code>.
 <code>send_event(<var>event</var>)</code> で遷移させることもできる。
-      小さくてよさそう。
+      小さくて, リソース制約がキツい用途では, よさそう。
       
+
   <tr><td>▲ <a href="https://github.com/andrew-gresyk/HFSM2/">HFSM2</a>
-    <td>▲direct transition  <code>changeTo&lt;<var>stateClass</var>&gt;()</code>
+    <td>MIT license. 状態はクラス. `FSM::State` から派生させる。イベントベースではない。▲direct transition <code>FSM::Instance#changeTo&lt;<var>stateClass</var>&gt;()</code>. ゲームに役立つ機能があるらしい。(未確認)
+
 
   <tr><td>▲ <a href="https://github.com/neilmendoza/ofxStateMachine/">ofxStateMachine</a>  
-    <td>▲direct transition <code>changeState(<var>stateStr</var>)</code>
+    <td>openFrameworks 向け. もはやメンテナンスされていない。▲direct transition <code>changeState(<var>stateStr</var>)</code>
 </table>
+
+そのほか:
+ - UML-State-Machine-in-C もはやメンテナンスされていなさそう。
+ - Another Finite State Machine (afsm) メンテナンスされていない。
+
+
+
+
+### 重量級
+
+イベントループも持ったもの。
+
+ - <a href="https://github.com/robosoft-ai/SMACC2/">SMACC2 – State Machine Asynchronous C++</a> リアルタイム viewer がある。<i>Boost.Statechart</i> 上に実装。
+   Tight integration with Robot Operating System (ROS) / SMACC2 for ROS 2
+
+ - <a href="https://www.state-machine.com/products/qp">QP™ Real-Time Embedded Frameworks (RTEFs)</a> POSIX, Windows and macOS でも動くらしい。ちょっと古いが, デザインについての議論スライド; <a href="https://www.cis.upenn.edu/~lee/06cse480/lec-HSM.pdf">Hierarchical State Machines - a Fundamentally Important Way of Design</a>
+ 
+
 
 
 
@@ -65,28 +113,27 @@ SCXML ファイルをそのまま利用する。Qt5/Qt6 両対応。
 
 ソースコードだけではこんがらがりやすい。多い.
 
- * ☆ PlantUML  https://plantuml.com/ja/  Javaベース. Graphviz に依存. SCXML に変換できる。
+ * ☆ PlantUML  https://plantuml.com/ja/  一強。Javaで作られている. Graphviz に依存. コマンドラインオプションで, 画像だけでなく SCXML でも出力できる。
  * ☆ UMLet https://www.umlet.com/
  * JavaScript (クライアント側生成)
     - DotUML  https://dotuml.com/  using Graphviz Dot.
     - ☆ State Machine Cat  https://github.com/sverweij/state-machine-cat/  SCXML にも対応
+    - Mermaid   State diagrams もいけるが、簡易な図。
 
 
 
 ## SCXML
 
-交換用のフォーマット。<a href="https://alexzhornyak.github.io/SCXML-tutorial/">SCXML-tutorial | SCXML illustrated examples and tutorials</a>
 
 実装 https://github.com/tklab-tud/uscxml/  C++ライブラリ. Java, C#, Python, Luaバインディングあり。
 
 
 
-## SCXML から C ソースコードを出力
+## SCXML などの形式から C ソースコードを出力
 
-考え方の筋が悪い。片方を修正したときに同期できない。
-
-これもいくつかある。https://github.com/jp-embedded/scxmlcc/
-
+考え方の筋が悪い。片方を修正したときに同期できない。これもいくつかある。
+ - https://github.com/jp-embedded/scxmlcc/
+ - <a href="https://smc.sourceforge.net/">SMC: The State Machine Compiler</a> 独自形式のファイルからC, C++, Java, ... を出力。
 
     
  

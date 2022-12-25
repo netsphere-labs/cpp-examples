@@ -23,7 +23,7 @@ struct FsmImpl {
     using namespace boost::sml;
 // clang-format off
     return make_transition_table(
-             // ガードを省略すると always 
+             // ガードを省略すると `always` 
              *state<idle>    + event<ev_start>  / ac_start    = state<driving>
             , state<driving> + event<ev_stop>   / ac_stop     = state<idle>
                                );
@@ -41,7 +41,7 @@ Controller::~Controller() {
 }
   
 void Controller::startup() {
-  // 直接遷移するのではなく, かならずイベントを介す.
+  // 直接, 別の状態に遷移するのではなく, かならずイベントを介す. Good.
   fsm_->process_event(ev_start{});
 }
 
