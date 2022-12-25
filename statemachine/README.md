@@ -57,7 +57,7 @@ SML の状態遷移のコード定義を PlantUML のテキストとして出力
 
 ## 有限状態機械 (Finite State Machine; FSM) ライブラリ
 
-`QStateMachine` は, 1クラスのなかで状態を管理したいといったような, 軽い用途には使いにくい。状態機械ライブラリを探した。山のようにあるが、まぁまぁ人気のものを挙げる。
+Qt の `QStateMachine` は, 1クラスのなかで状態を管理したいといったような, 軽い用途には使いにくい。状態機械ライブラリを探した。山のようにあるが、まぁまぁ人気のものを挙げる。
 
 UML2 では, <i>behavior (behavioural) state machines</i> and <i>protocol state machines</i> という区分を挙げている。求められる機能性の違いは微妙だが、前者は状態が動名詞になりやすい。State が内部状態や振る舞いを持つため, クラスとして定義できたほうがよいようだ。
 
@@ -71,18 +71,15 @@ UML2 では, <i>behavior (behavioural) state machines</i> and <i>protocol state 
 しかし, C++ の超絶技巧を駆使しており、エラーが出た場合など挙動がさっぱり分からないのが傷。
 
   <tr><td>▲ <a href="https://github.com/erikzenker/hsm/">Hana State Machine (HSM)</a> 
-    <td>[Boost::ext].SML と Boost.MSM の実装の仕方を Boost.Hana で再実装し, 独自のメタプログラミングコードの大きさを縮小。パフォーマンス傾向は MSM に似ている。悪くない。しかし, 黒魔術であることには変わらないので, SML を使えばよい。
+    <td>[Boost::ext].SML と Boost.MSM の実装の仕方を <i>Boost.Hana</i> で再実装し, 独自のメタプログラミングコードの大きさを縮小。パフォーマンス傾向は MSM に似ている。悪くない。しかし, 黒魔術であることには変わらないので, SML を使えばよい。
 
   <tr><td>☆ <a href="https://github.com/digint/tinyfsm/">TinyFSM</a>
-    <td>イベントがクラス. `tinyfsm::Event` から派生させる。状態もクラス. <code>tinyfsm::Fsm&lt;&gt;</code> クラスを派生させてFSM base class を定義し、そこから各状態クラスを派生させる。
-
-      ▲direct transition <code>transit&lt;<var>stateClass</var>&gt;()</code>.
-<code>send_event(<var>event</var>)</code> で遷移させることもできる。
+    <td>イベントがクラス. <code>tinyfsm::Event</code> から派生させる。状態もクラス. <code>tinyfsm::Fsm&lt;&gt;</code> クラスを派生させてFSM base class を定義し、そこから各状態クラスを派生させる。▲direct transition <code>transit&lt;<var>stateClass</var>&gt;()</code>. <code>send_event(<var>event</var>)</code> で遷移させることもできる。
       小さくて, リソース制約がキツい用途では, よさそう。
       
 
   <tr><td>▲ <a href="https://github.com/andrew-gresyk/HFSM2/">HFSM2</a>
-    <td>MIT license. 状態はクラス. `FSM::State` から派生させる。イベントベースではない。▲direct transition <code>FSM::Instance#changeTo&lt;<var>stateClass</var>&gt;()</code>. ゲームに役立つ機能があるらしい。(未確認)
+    <td>MIT license. 状態はクラスで, <code>FSM::State</code> から派生させる。イベントベースではない。▲direct transition <code>FSM::Instance#changeTo&lt;<var>stateClass</var>&gt;()</code>. ゲームに役立つ機能があるらしい。(未確認)
 
 
   <tr><td>▲ <a href="https://github.com/neilmendoza/ofxStateMachine/">ofxStateMachine</a>  
@@ -103,29 +100,24 @@ UML2 では, <i>behavior (behavioural) state machines</i> and <i>protocol state 
  - <a href="https://github.com/robosoft-ai/SMACC2/">SMACC2 – State Machine Asynchronous C++</a> リアルタイム viewer がある。<i>Boost.Statechart</i> 上に実装。
    Tight integration with Robot Operating System (ROS) / SMACC2 for ROS 2
 
- - <a href="https://www.state-machine.com/products/qp">QP™ Real-Time Embedded Frameworks (RTEFs)</a> POSIX, Windows and macOS でも動くらしい。ちょっと古いが, デザインについての議論スライド; <a href="https://www.cis.upenn.edu/~lee/06cse480/lec-HSM.pdf">Hierarchical State Machines - a Fundamentally Important Way of Design</a>
+ - <a href="https://www.state-machine.com/products/qp">QP™ Real-Time Embedded Frameworks (RTEFs)</a> POSIX, Windows and macOS でも動くらしい。デザインについての議論スライド; <a href="https://www.cis.upenn.edu/~lee/06cse480/lec-HSM.pdf">Hierarchical State Machines - a Fundamentally Important Way of Design</a>
  
+ - https://github.com/tklab-tud/uscxml/  SCXML interpreter and transformer/compiler. C++ライブラリ. Java, C#, Python, Luaバインディングあり。
 
 
 
 
 ## 状態遷移図のテキストをヴィジュアル化
 
-ソースコードだけではこんがらがりやすい。多い.
+ソースコードだけではこんがらがりやすい。やたらと多い.
 
  * ☆ PlantUML  https://plantuml.com/ja/  一強。Javaで作られている. Graphviz に依存. コマンドラインオプションで, 画像だけでなく SCXML でも出力できる。
  * ☆ UMLet https://www.umlet.com/
  * JavaScript (クライアント側生成)
     - DotUML  https://dotuml.com/  using Graphviz Dot.
-    - ☆ State Machine Cat  https://github.com/sverweij/state-machine-cat/  SCXML にも対応
+    - ☆ State Machine Cat  https://github.com/sverweij/state-machine-cat/  SCXML への出力にも対応
     - Mermaid   State diagrams もいけるが、簡易な図。
 
-
-
-## SCXML
-
-
-実装 https://github.com/tklab-tud/uscxml/  C++ライブラリ. Java, C#, Python, Luaバインディングあり。
 
 
 
