@@ -65,26 +65,35 @@ UML2 では, <i>behavior (behavioural) state machines</i> and <i>protocol state 
 
 ### 軽量ライブラリ
 
-<table>
-  <tr><td>☆ <a href="https://boost-ext.github.io/sml/">[Boost::ext].SML</a>
-    <td><i>Boost.Statechart</i> はパフォーマンスが悪く, Boost Meta State Machine (MSM) はコンパイルの時間・メモリを大量に食う。SML は, パフォーマンスは MSM 並で、コンパイルが多少は軽くなっている。
+#### ☆ <a href="https://boost-ext.github.io/sml/">[Boost::ext].SML</a>
+<i>Boost.Statechart</i> はパフォーマンスが悪く, Boost Meta State Machine (MSM) はコンパイルの時間・メモリを大量に食う。SML は, パフォーマンスは MSM 並で、コンパイルが多少は軽くなっている。
 しかし, C++ の超絶技巧を駆使しており、エラーが出た場合など挙動がさっぱり分からないのが傷。
 
-  <tr><td>▲ <a href="https://github.com/erikzenker/hsm/">Hana State Machine (HSM)</a> 
-    <td>[Boost::ext].SML と Boost.MSM の実装の仕方を <i>Boost.Hana</i> で再実装し, 独自のメタプログラミングコードの大きさを縮小。パフォーマンス傾向は MSM に似ている。悪くない。しかし, 黒魔術であることには変わらないので, SML を使えばよい。
+#### ▲ <a href="https://github.com/erikzenker/hsm/">Hana State Machine (HSM)</a> 
+[Boost::ext].SML と Boost.MSM の実装の仕方を <i>Boost.Hana</i> で再実装し, 独自のメタプログラミングコードの大きさを縮小。パフォーマンス傾向は MSM に似ている。悪くない。しかし, 黒魔術であることには変わらないので, SML を使えばよい。
 
-  <tr><td>☆ <a href="https://github.com/digint/tinyfsm/">TinyFSM</a>
-    <td>イベントがクラス. <code>tinyfsm::Event</code> から派生させる。状態もクラス. <code>tinyfsm::Fsm&lt;&gt;</code> クラスを派生させてFSM base class を定義し、そこから各状態クラスを派生させる。▲direct transition <code>transit&lt;<var>stateClass</var>&gt;()</code>. <code>send_event(<var>event</var>)</code> で遷移させることもできる。
-      小さくて, リソース制約がキツい用途では, よさそう。
+#### ☆ <a href="https://github.com/digint/tinyfsm/">TinyFSM</a>
+大きさが小さい。リソース制約がキツい用途では, よさそう。
+
+イベントがクラス. <code>tinyfsm::Event</code> から派生させる。状態もクラス. 継承関係がちょっと変わっている。<code>tinyfsm::Fsm&lt;&gt;</code> クラスを派生させて状態機械クラスを定義し、そこから各状態クラスを派生させる。
+
+<code>状態機械クラス#dispatch(<var>event</var>)</code> を呼び出すと状態クラスの <code>react(<var>eventType&amp;</var> )</code> メソッドが呼び出される。そのなかで <code>transit&lt;<var>stateClass</var>&gt;()</code> で遷移させる。
+
+複数の状態機械を設ける場合は <code>tinyfsm::FsmList&lt;StateClass, ...&gt;</code> を使う。<code>template dispatch&lt;eventType&gt;(event)</code> で全状態機械にイベントを配信できる。
       
 
-  <tr><td>▲ <a href="https://github.com/andrew-gresyk/HFSM2/">HFSM2</a>
-    <td>MIT license. 状態はクラスで, <code>FSM::State</code> から派生させる。イベントベースではない。▲direct transition <code>FSM::Instance#changeTo&lt;<var>stateClass</var>&gt;()</code>. ゲームに役立つ機能があるらしい。(未確認)
+#### ☆ <a href="https://github.com/andrew-gresyk/HFSM2/">HFSM2</a>
+MIT license. ゲームに役立つ機能があるらしい (未確認). 状態はクラスで, <code>FSM::State</code> から派生させる。状態機械は <code>FSM::Instance</code> インスタンス. 二つの書き方ができる。
+
+(1) イベントベースにしない。<code>FSM::Instance#update()</code> を呼び出すと状態クラスの <code>update(FullControl&amp; )</code> メソッドが呼び出される。そこで <code>FullControl#changeTo&lt;<var>stateClass</var>&gt;()</code> で直接遷移. 
+
+(2) イベントベース. <code>FSM::Instance#react(<var>event</var>)</code> を呼び出すと状態クラスの <code>react(<var>eventType&amp;</var> )</code> メソッドが呼び出される。イベントの型でオーバーロードできる。
 
 
-  <tr><td>▲ <a href="https://github.com/neilmendoza/ofxStateMachine/">ofxStateMachine</a>  
-    <td>openFrameworks 向け. もはやメンテナンスされていない。▲direct transition <code>changeState(<var>stateStr</var>)</code>
-</table>
+#### ▲ <a href="https://github.com/neilmendoza/ofxStateMachine/">ofxStateMachine</a>  
+openFrameworks 向け. もはやメンテナンスされていない。▲direct transition <code>changeState(<var>stateStr</var>)</code>
+
+
 
 そのほか:
  - UML-State-Machine-in-C もはやメンテナンスされていなさそう。
