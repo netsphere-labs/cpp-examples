@@ -29,14 +29,16 @@
 
 複雑なことをしなければ libc がよい。そうでなければ, <i>RE2</i> ぐらいしかない。しかし, RE2 は look-ahead, look-behind (まとめて lookaround) をサポートしていない。Lookaround は POSIX 拡張正規表現にはない。先読みは ECMAScript 5.1 Edition (June 2011) にはある。
 
-|<code>?=</code> positive lookahead 肯定先読み      |<code>?!</code> negative lookahead 否定先読み      |
-|<code>?&lt;=</code> positive lookbehind 肯定後読み. Ruby 未対応. ECMAScript 未対応. |<code>?&lt;!</code> negative lookbehind 否定後読み. Ruby 未対応. ECMAScript 未対応. |
+|      |肯定                                              |否定                                              |
+|------|-------------------------------------------------|--------------------------------------------------|
+|先読み |<code>?=</code> positive lookahead 肯定先読み      |<code>?!</code> negative lookahead 否定先読み      |
+|後読み |<code>?&lt;=</code> positive lookbehind 肯定後読み. Ruby 未対応. ECMAScript 未対応. |<code>?&lt;!</code> negative lookbehind 否定後読み. Ruby 未対応. ECMAScript 未対応. |
 
 
 PCRE は 2系統ある. ソースコードレベルの互換性もない。そもそもAPI名がすべて変わってしまっている.
- - pcre-devel-8.45-1.fc37.2.x86_64   Fedora 37 ではもはや依存なし. 削除してOK.
+ - pcre-devel-8.45-1.fc37.2.x86_64   -- Fedora 37 ではもはや依存なし. 削除してOK.
       ライブラリのほうは, grep-3.7, sord-0.16.10 (RDF ライブラリ) 等々が依存.
- - pcre2-devel-10.40-1.fc37.1.x86_64    glib2-devel が利用.
+ - pcre2-devel-10.40-1.fc37.1.x86_64   -- glib2-devel が利用.
 
 
 試していない
