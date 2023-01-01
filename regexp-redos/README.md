@@ -25,7 +25,7 @@
 |Boost.Regex |Some. <code>[:Nd:]</code> スクリプト名? |Yes <code>UnicodeString</code>   |ICUと併用でUnicodeサポート (正規表現エンジンは Boost 側; <code>u32regex_match()</code>). 不味い正規表現はマッチ実行時に例外発生.  |
 |ICU Regex   |Yes                      |Yes    |アカン. そもそも正規表現エンジンがバグってる   |
 |PCRE2       |Yes. Perl synonym <code>\p{Letter}</code> is not supported |<code>PCRE2_CODE_UNIT_WIDTH</code> で指定 |<code>pcre2_match()</code> は早いタイミングで matching error を返す. DFA モードだと限界が上がるが, 10,000 で反応が帰ってこない.   |
-|RE2         |Yes. <code>\p{Greek}</code> |qt5-qtwebengine が利用. 結果OK. 100,000 でも一瞬.  |
+|RE2         |Yes. <code>\p{Greek}</code> |No. UTF-8専用 |qt5-qtwebengine が利用. 結果OK. 100,000 でも一瞬.  |
 
 複雑なことをしなければ libc がよい。使える正規表現は <kbd>egrep</kbd>(1) と同じ。長い入力でも耐えるのは <i>RE2</i> ぐらいしかない。しかし, RE2 は look-ahead, look-behind (まとめて lookaround) をサポートしていない。耐えずにすぐさま失敗する (エラー発生) のでも差し支えない。そうすると, Boost.Regex (例外発生), PCRE2 の <code>pcre2_match()</code> でもよい。逆に <code>pcre2_dfa_match()</code> は反応が帰ってこなくてダメ。
 
