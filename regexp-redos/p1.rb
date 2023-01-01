@@ -6,7 +6,8 @@ def test1
   p re =~ 'a' * 1000 #+ '\x00'
   p re =~ 'a' * 20 + 'x'
   # こんな簡単なのでもCPU 100% に張り付く
-  p re =~ 'a' * 30 + 'x'    # user    0m22.879s
+  #p re =~ 'a' * 30 + 'x'    # user    0m22.879s
+  p re =~ 'a' * 100 + 'x' 
 end
 
 def test2
