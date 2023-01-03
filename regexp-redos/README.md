@@ -95,12 +95,14 @@ Lookaround は POSIX 拡張正規表現にはない。先読みは ECMAScript 5.
 
 ## 関連ページ
 
-講義テキストかな. https://www.ci.seikei.ac.jp/yamamoto/lecture/automaton/text.pdf  順を追って, DFA と NFA が等価であることを示す。
+講義テキストかな. <a href="https://www.ci.seikei.ac.jp/yamamoto/lecture/automaton/text.pdf">オートマトンと言語理論</a>  順を追って, DFA と NFA が等価であることを示す。
 
 http://www.kmonos.net/wlog/115.html  正規表現しちへんげ!  いろいろな方角からの定義のしかた。
 
 <a href="https://scrapbox.io/mrsekut-p/NFA%E3%81%8B%E3%82%89DFA%E3%81%B8%E3%81%AE%E5%A4%89%E6%8F%9B">NFAからDFAへの変換 - mrsekut-p</a>  NFA が n 個の有限な状態を持つとき、DFA の状態は高々 2<sup>n</sup> 個. そりゃメモリが爆発するわ。
 
-https://www.jstage.jst.go.jp/article/jssst/29/1/29_1_1_147/_pdf  先読み付き正規表現を非決定性有限オートマトン NFA に変換する手法。
+<a href="https://www.jstage.jst.go.jp/article/jssst/29/1/29_1_1_147/_pdf">先読み付き正規表現の有限状態オートマトンへの変換</a>  先読みパタンは RE2, .NET7 <code>RegexOptions.NonBacktracking</code> で提供されない。非決定性有限オートマトン NFA に変換する手法。
 
-Haskell で線形時間、加えて正規言語を超えるマッチが可能な実装例 https://tech.preferred.jp/ja/blog/regexp-play/
+Haskell で, 線形時間、加えて正規言語を超えるマッチが可能な実装例 https://tech.preferred.jp/ja/blog/regexp-play/
+
+<a href="http://www-ikn.ist.hokudai.ac.jp/~kida/lecture/IKN_lecture_jpn_5.pdf">講義「情報知識ネットワーク特論」〜情報検索とパターン照合 第5回 正規表現の照合</a> NFA を構築するにも、いくつかやり方がある。Thompson法, Glushkov法.
