@@ -89,7 +89,7 @@ MIT license. ゲームに役立つ機能があるらしい (未確認). 状態�
  (1) イベントベースにしない。<code>FSM::Instance#update()</code> を呼び出すと状態クラスの <code>update(FullControl&amp; )</code> メソッドが呼び出される。そこで <code>FullControl#changeTo&lt;<var>stateClass</var>&gt;()</code> で直接遷移. 
     ちゃんと <code>update()</code> を抜けてから、次の状態の <code>enter()</code> が呼び出される。
     
- (2) イベントベース. <code>FSM::Instance#react(<var>event</var>)</code> を呼び出すと状態クラスの <code>react(<var>eventType&amp;</var> )</code> メソッドが呼び出される。イベントの型でオーバーロードできる。
+ (2) イベントベース. <code>FSM::Instance#react(<var>event</var>)</code> を呼び出すと状態クラスの <code>react(<var>eventType&amp;</var>, FullControl&amp; )</code> メソッドが呼び出される。イベントの型でオーバーロードできる。
 
 
 #### ▲ <a href="https://github.com/neilmendoza/ofxStateMachine/">ofxStateMachine</a>  
