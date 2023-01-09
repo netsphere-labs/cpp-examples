@@ -23,11 +23,26 @@ Bison 3.8 では 7ヶ. `glr2.cc` が加わった。
 C++ スケルトン `lalr1.cc` の, 一式動くサンプル。過去のしがらみとかいろいろあって、動かすまでが大変。
 Flex と組み合わせた。これを出発点にできる。
 
+再入可能にできる。
+```c++
+int main( int argc, char* argv[] ) 
+{
+  MyCppLexer scanner(&cin);
+  yy::parser my_parser(&scanner);
+
+  // 成功時 0
+  int r = my_parser.parse();
+
+  return r;
+}
+```
+
 Bison 側:
  - `%language "c++"`
- - `%define api.value.type variant` 各トークンの型を <code>%union</code> ではなく、C++ っぽく構築する。`string` をポインタにしなくてよい。
+ - `%define api.value.type variant` -- 各トークンの型を <code>%union</code> ではなく、C++ っぽく構築する。`string` をポインタにしなくてよい。
    これを指定するときは必ず `%define api.token.constructor` も指定すること。でないとビルドできない。
-
+ - 構文エラーの場合は, 例外 `yy::parser::syntax_error` を投げればよい。
+ 
 Flex側:
  - `%option c++`  -- `yyFlexLexer` クラスを派生して、自分の lexer クラスを作る.
  - 行番号の更新. Bison も Flex も自動で行番号を更新しない。Flex 側で位置情報を更新する。
@@ -43,7 +58,7 @@ Flex側:
         loc.end.column++; \
     }
 ```
- - `yy::parser::make_TK_IDENT(yytext, loc)` のようにして Bison 側にトークンを渡す。
+ - 各パターンにマッチしたときの戻り値を `yy::parser::make_TK_IDENT(yytext, loc)` のようにして, Bison 側にトークンを渡す。
  - したがい, <code>lex()</code> メソッドの戻り値の型は `yy::parser::symbol_type`. <code>YY_DECL</code> の定義も必要。
 
 
