@@ -1,0 +1,16 @@
+
+condition X = 1 + 2 .. 5 - 1
+condition Y = ( 1, 3, 7 - 2, 7)
+
+let a = 1 + 2
+let b = a - 123
+
+#let hoge = fuga    # error 未定義の変数
+#let hoge : FUGA = 200 # error 未定義の型
+
+let b = b + 20  # 再代入OK
+#let Y = 100     # error: 型への let
+#condition X = (1, 2, 3)   # error: 再定義
+
+let c: X = 100   # error 制約違反
+
