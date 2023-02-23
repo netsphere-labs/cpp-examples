@@ -17,7 +17,7 @@ Bison は, m4 で作られたスケルトンをベースに、構文解析器を
 
 Bison 3.8 では 7ヶ. `glr2.cc` が加わった。
 
-
+解説記事: <a href="https://www.nslabs.jp/bison-skeletons.rhtml">Bison: スケルトンの選択 [Bison 3.4対応] | Netsphere Laboratories</a>
 
 
 ## `cpp-parser-sample/`
