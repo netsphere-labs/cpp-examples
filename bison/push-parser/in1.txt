@@ -6,9 +6,9 @@ let a = 1 + 2
 let b = a - 123
 
 #let hoge = fuga    # error 未定義の変数
-#let hoge : FUGA = 200 # error 未定義の型
+#let hoge:FUGA = 200 # error 未定義の型
 
-# ! 字句解析エラー
+#! 字句解析エラー
 
 let b = b + 20  # 再代入OK
 #let Y = 100     # error: 型への let

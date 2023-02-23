@@ -25,6 +25,10 @@
 // `yacc.c`:       再入可能にするには, "full" にする。(true ではない.)
 %define api.pure full
 
+// Plain C, D Java only. %.tab.hh で yypstate_new(), yypush_parse(), yypstate_delete()
+//     値: pull, push, both
+%define api.push-pull both
+
 
 ///////////////////////////
 // ここから定義

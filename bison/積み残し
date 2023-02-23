@@ -1,0 +1,12 @@
+
+
+エラー処理の例
+  C++ 版: syntax_error 例外を投げる. すみ
+
+
+<s>行番号の表示 -> 字句解析に行番号、列番号を追加.</s>
+  すみ. `YY_USER_ACTION` を定義.
+
+<s>bison の token の型に c++ variants を使う。</s> 
+  すみ. `%define api.value.type variant`. Bison manual 10.1.4.2
+  

@@ -36,7 +36,7 @@
 
 %{
 // lex.CppBase.cc に展開される
-#include "cpp-parse.tab.hh"
+#include "push-parse.tab.hh"
 #include "cpp-lexer.h"
 %}
 
@@ -46,14 +46,14 @@
   // 行番号だけで十分な場合は, %option yylineno を指定し, yylineno が使える.
   // loc.end.column はトークンの最後の文字 "の次" を指す.
 #define YY_USER_ACTION \
-    loc.begin.line = loc.end.line; \
-    loc.begin.column = loc.end.column ; \
+    yylloc->first_line = yylloc->last_line; \
+    yylloc->first_column = yylloc->last_column + 1; \
     for (const char* pp = yytext; *pp; pp++) { \
       if (*pp == '\n') {                        \
-        loc.end.line++; loc.end.column = 0; \
+        yylloc->last_line++; yylloc->last_column = 0; \
       } \
       else                     \
-        loc.end.column++; \
+        yylloc->last_column++;                 \
     }
   
 %}
@@ -69,29 +69,31 @@
 
 [a-zA-Z][a-zA-Z0-9]*  {
         if ( !strcmp(yytext, "let"))
-          return yy::parser::make_TK_LET(loc);
+          return yytokentype::TK_LET;
         else if ( !strcmp(yytext, "condition"))
-          return yy::parser::make_TK_CONDITION(loc);
+          return yytokentype::TK_CONDITION;
         else {
-          return yy::parser::make_TK_IDENT(yytext, loc);
+          yylval->sval = strdup(yytext);
+          return yytokentype::TK_IDENT;
+        }
     }
-  }
 
-".."    return yy::parser::make_TK_DOTDOT(loc);
+".."    return yytokentype::TK_DOTDOT;
 
 [0-9]+  {
-        return yy::parser::make_TK_INTEGER(atoi(yytext), loc);
-  }
+        yylval->intval = atoi(yytext);
+        return yytokentype::TK_INTEGER;
+    }
 
-[\r\n]([ \t]*[\r\n])* { return yy::parser::make_TK_SEP(loc); }
+[\r\n]([ \t]*[\r\n])* { return yytokentype::TK_SEP; }
 
 [ \t]+   { }
 
 "!"   {   // 字句解析でのエラー
-        return yy::parser::make_YYUNDEF(loc); }
+        return yytokentype::YYUNDEF; }
 
-.       return yy::parser::symbol_type(yytext[0], loc);
+.       return (yytokentype) yytext[0];
 
-<<EOF>>    return yy::parser::make_YYEOF(loc);
+<<EOF>>    return yytokentype::YYEOF;
 
 %%
