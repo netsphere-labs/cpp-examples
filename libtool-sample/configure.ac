@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
 
+# 改行は LF のみににしなければならない。DOSだと次のような変なエラーがでる:
+#   configure: creating ./config.status
+#   .in'ig.status: error: cannot find input file: `
+
 AC_PREREQ([2.71])
 
 # [FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS]
