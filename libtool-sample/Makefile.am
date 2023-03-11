@@ -1,0 +1,4 @@
+
+# root
+
+SUBDIRS = lib test
