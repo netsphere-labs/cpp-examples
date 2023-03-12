@@ -21,7 +21,7 @@ AC_PROG_CXX([clang++ g++ c++])
 # libtool init
 LT_INIT
 
-CXXFLAGS="$CXXFLAGS -Wall -Wextra -Wshadow -Wformat=2 -Wformat-truncation -Wundef -fno-common -Wcast-align -Wwrite-strings -Wno-unused-parameter -fstack-protector-strong "  
+#CXXFLAGS="$CXXFLAGS -Wall -Wextra -Wshadow -Wformat=2 -Wformat-truncation -Wundef -fno-common -Wcast-align -Wwrite-strings -Wno-unused-parameter -fstack-protector-strong "  
 
 # for test. AM_ENABLE_STATIC is deprecated.
 AC_ENABLE_STATIC(no)
