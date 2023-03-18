@@ -3,7 +3,7 @@
 
 ## 1. ipv6_sock/
 
-解説 socket.rhtml
+解説 <a href="https://www.nslabs.jp/socket.rhtml">IPv6ソケットプログラミング [C++]</a>
 
 
 ## 2. nonblock-gtk/
