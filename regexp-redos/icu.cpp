@@ -30,7 +30,7 @@ int main()
   assert(!status);
   
   run_regex(&re, string(1000, 'a') );
-  //run_regex(&re, string(10000, 'a') ); // 長くするとマッチも帰ってこなくなる。
+  run_regex(&re, string(10000, 'a') ); // 長くするとマッチも帰ってこなくなる。
   run_regex(&re, string(1000, 'a') + "x" );  // すぐ not matched. OK
   //run_regex(&re, string(10000, 'a') + "x" ); // 帰ってこなくなる
 

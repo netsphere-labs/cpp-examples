@@ -1,5 +1,5 @@
 
-TARGETS = icu libc1 pcre re2 boost re2-sub
+TARGETS = icu libc1 pcre pcre-utf16 re2 boost re2-sub
 all: $(TARGETS)
 
 CXXFLAGS = -Wall -Wextra
@@ -12,6 +12,9 @@ libc1: libc1.o
 
 pcre: pcre.o
 	$(LINK.o) -lstdc++ -lpcre2-8 -o $@ $^
+
+pcre-utf16: pcre-utf16.o
+	$(LINK.o) -lstdc++ -lpcre2-16 -licui18n -licuuc -o $@ $^
 
 re2: re2.o
 	$(LINK.o) -lstdc++ -lre2 -o $@ $^

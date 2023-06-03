@@ -23,7 +23,7 @@
 |------------|-------------------------|-------|------------------------------------|
 |glibc       |No                       |No     |POSIX Extended Regular Expressions. 結果OK. 100,000 でも一瞬.   |
 |Boost.Regex |Some. <code>[:Nd:]</code> スクリプト名? |Yes <code>UnicodeString</code>   |ICUと併用でUnicodeサポート (正規表現エンジンは Boost 側; <code>u32regex_match()</code>). 不味い正規表現はマッチ実行時に例外発生.  |
-|ICU Regex   |Yes                      |Yes    |アカン. そもそも正規表現エンジンがバグってる. 10,000 で反応が帰ってこない.   |
+|▲ ICU Regex   |Yes                      |Yes    |アカン. そもそも正規表現エンジンがバグってる. 10,000 で反応が帰ってこない.   |
 |PCRE2       |Yes. Perl synonym <code>\p{Letter}</code> is not supported |<code>PCRE2_CODE_UNIT_WIDTH</code> で指定 |<code>pcre2_match()</code> は早いタイミングで matching error を返す. DFA モードだと限界が上がるが, 10,000 で反応が帰ってこない.   |
 |RE2         |Yes. <code>\p{Greek}</code> |No. UTF-8専用 |qt5-qtwebengine が利用. 結果OK. 100,000 でも一瞬.  |
 
@@ -37,9 +37,9 @@ PCRE は 2系統ある. ソースコードレベルの互換性もない。そ�
 
 
 試していないが面白そう:
- - https://www.akenotsuki.com/misc/srell/  Unicode対応テンプレートライブラリ.
- - https://github.com/laurikari/tre/  POSIX-compliant で効率的な実装.
- - https://github.com/hanickadot/compile-time-regular-expressions/ コンパイル時正規表現. Unicode プロパティ対応. スゲー
+ - <a href="https://www.akenotsuki.com/misc/srell/">SRELL ～ C++用正規表現テンプレートライブラリ</a>  UTF-16 にも対応しているようだ. 正規表現は ECMAScript 2022 互換。よい。
+ - ▲ https://github.com/laurikari/tre/  POSIX-compliant で効率的な実装. Unicode 対応なし。実用ではない。
+ - https://github.com/hanickadot/compile-time-regular-expressions/ コンパイル時正規表現. C++17 以降, Unicode プロパティ対応. スゲー
 
 コンパイル時正規表現は、昔にも <i>Boost.Xpressive</i> があったが、これは書き方も独自で、キワモノだった。上の ctre は C++ ユーザ定義リテラルを活用して、一見ふつうの正規表現に見える.
 
@@ -95,7 +95,7 @@ Lookaround は POSIX 拡張正規表現にはない。先読みは ECMAScript 5.
 
 ## 関連ページ
 
-講義テキストかな. <a href="https://www.ci.seikei.ac.jp/yamamoto/lecture/automaton/text.pdf">オートマトンと言語理論</a>  順を追って, DFA と NFA が等価であることを示す。
+講義テキストかな? <a href="https://www.ci.seikei.ac.jp/yamamoto/lecture/automaton/text.pdf">オートマトンと言語理論</a>  順を追って, DFA と NFA が等価であることを示す。
 
 http://www.kmonos.net/wlog/115.html  正規表現しちへんげ!  いろいろな方角からの定義のしかた。
 
