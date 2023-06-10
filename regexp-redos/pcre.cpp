@@ -1,4 +1,11 @@
 
+/*
+PCRE2
+ - DFA 版は、逆に、反応が帰ってこない (長考). ダメ.
+ - pcre2_match() はエラーになる (match limit exceeded). こちらのほうがよい。
+   意外!
+*/
+
 #define PCRE2_CODE_UNIT_WIDTH 8  // 定義が必須
 #include <pcre2.h>
 #include <string.h>
@@ -6,6 +13,7 @@
 using namespace std;
 
 #define USE_DFA 1
+
 
 void test(pcre2_code* re, const char* str)
 {
@@ -35,7 +43,7 @@ void test(pcre2_code* re, const char* str)
     default:
       printf("Matching error %d\n", rc); break;
     }
-    pcre2_match_data_free(match_data);
+    pcre2_match_data_free(match_data); match_data = NULL;
     return;
   }
 

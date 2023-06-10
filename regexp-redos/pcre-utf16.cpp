@@ -1,5 +1,18 @@
 
-// ICU と組み合わせる方法
+/*
+ICU と組み合わせる. 
+  - PCRE2_CODE_UNIT_WIDTH を 16 に定義する。UTF-16
+
+毎回 pcre2_match_data_free() しなくてもよい.
+  - pcre2_match_data_create(ovecsize, gcontext) で pcre2_match_data を生成
+  - 成功した場合と、最後だけ解放すればよい。
+
+C++ wrapper
+  - (ヘッダのみ) https://github.com/jpcre2/jpcre2/
+    -> 使い方 https://stackoverflow.com/questions/32580066/using-pcre2-in-a-c-project
+  - POCO も PCRE2 ラッパ。
+  - Qt6 QRegularExpression もラッパ。
+*/
 
 #define PCRE2_CODE_UNIT_WIDTH 16  // 定義が必須
 #include <unicode/unistr.h>
@@ -11,28 +24,21 @@ using namespace std;
 using namespace icu;
 
 
-/* C++ wrapper (ヘッダのみ) https://github.com/jpcre2/jpcre2/
-    -> 使い方 https://stackoverflow.com/questions/32580066/using-pcre2-in-a-c-project
-   POCO も PCRE2 ラッパ。
-   Qt6 QRegularExpression もラッパ。
-   
-この構造体を直接は使えない。invalid use of incomplete type
-typedef struct pcre2_real_match_data {
-...
-} pcre2_real_match_data;
+/*
 */
 
-void test(const pcre2_code* re, const UnicodeString& str)
+int test( const pcre2_code* re, const UnicodeString& str,
+          pcre2_match_data* matched )
 {
   assert(re);
-  pcre2_match_data* matched = pcre2_match_data_create_from_pattern(re, NULL);
-
+  assert( matched );
+  
   int rc = pcre2_match(re,  // code
                        (PCRE2_SPTR16) str.getBuffer(),  // subject
                        str.length(), // length: code units, not chars.
                        0,            // startoffset
                        0,            // options
-                       matched,   // match_data
+                       matched,      // match_data  NULL 不可
                        NULL);        // mcontext
   if (rc < 0) {
     switch (rc) {
@@ -41,15 +47,18 @@ void test(const pcre2_code* re, const UnicodeString& str)
     default:
       printf("Matching error %d\n", rc); break;
     }
-    pcre2_match_data_free( matched );
-    return;
+    //pcre2_match_data_free( matched ); matched = NULL;
+    return rc;
   }
-
+  // rc = 0: 成功したが, the vector of offsets が小さすぎる
+  
   // Match succeeded. Get a pointer to the output vector.
+  // pcre2_match_data 構造体は opaque. 直接は使えない
   PCRE2_SIZE* ovec = pcre2_get_ovector_pointer(matched);
   printf("Match succeeded at offset %ld\n", ovec[0]);
 
   // Show substrings stored in the output vector.
+  // 0: がマッチした全体
   for (int i = 0; i < rc; i++) {
     // ペアが配列の交互になっいる。
     PCRE2_SIZE substring_length = ovec[2 * i + 1] - ovec[2 * i];
@@ -60,16 +69,16 @@ void test(const pcre2_code* re, const UnicodeString& str)
 
   string t;
   printf("All text = %s\n", str.toUTF8String(t).c_str() );
-  
-  pcre2_match_data_free(matched);
+  return rc;
 }
 
+
+const UnicodeString re_str("^(a+)+(b+)$"); // Not safe pattern
 
 int main()
 {
   int err_num;
   PCRE2_SIZE err_offset;
-  static const UnicodeString re_str("^(a+)+(b+)$"); // Not safe pattern
   pcre2_code* re = pcre2_compile((PCRE2_SPTR16) re_str.getBuffer(), // pattern
                                  re_str.length(),    // length
                                  0,                  // options
@@ -85,15 +94,35 @@ int main()
     return 1;
   }
 
-  test(re, (string(3, 'a') + "bbb").c_str() );
-  test(re, (string(1000, 'a') + string(1000, 'b')).c_str() );
-  test(re, (string(10, 'a') + "x").c_str() );    //=> No match.
-  // 限界が低すぎる
-  test(re, (string(100, 'a') + string(100, 'b') + "x").c_str() );   //=> Matching error -47
-  test(re, (string(1000, 'a') + string(1000, 'b') + "x").c_str() );  //       match limit exceeded
-  test(re, (string(10000, 'a') + "x").c_str() ); // DFA でも反応が帰ってこない.
+  //pcre2_match_data* matched = pcre2_match_data_create_from_pattern(re, NULL);
+  pcre2_match_data* matched = pcre2_match_data_create(128, NULL);
+  int rc = test(re, (string(3, 'a') + "bbb").c_str(), matched );
+  assert(rc >= 0);
+  pcre2_match_data_free(matched);
+  
+  matched = pcre2_match_data_create(128, NULL);
+  rc = test(re, (string(1000, 'a') + string(1000, 'b')).c_str(), matched );
+  assert(rc >= 0);
+  pcre2_match_data_free(matched);
+  
+  matched = pcre2_match_data_create(128, NULL);
+  rc = test(re, (string(10, 'a') + "x").c_str(), matched );    //=> No match.
+  assert(rc < 0);
+  // 解放不要
+  
+  // 限界が低い. OK
+  // Matching error -47 (match limit exceeded)
+  rc = test(re, (string(100, 'a') + string(100, 'b') + "x").c_str(), matched );
+  assert( rc < 0 );
+  
+  rc = test(re, (string(1000, 'a') + string(1000, 'b') + "x").c_str(), matched );
+  assert( rc < 0 );
+  
+  rc = test(re, (string(10000, 'a') + "x").c_str(), matched ); 
+  assert( rc < 0 );
   
   pcre2_code_free(re);
+  pcre2_match_data_free(matched);
   return 0;
 }
 
