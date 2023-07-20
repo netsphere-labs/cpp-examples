@@ -24,9 +24,6 @@ using namespace std;
 using namespace icu;
 
 
-/*
-*/
-
 int test( const pcre2_code* re, const UnicodeString& str,
           pcre2_match_data* matched )
 {
