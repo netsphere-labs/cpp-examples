@@ -4,7 +4,7 @@
 #include "cpp-lexer.h"
 #include <iostream>
 #include <stdarg.h>
-#include "ptr_map.h"
+#include "../ptr_map.h"
 #include "runtime.h"
 using namespace std;
 

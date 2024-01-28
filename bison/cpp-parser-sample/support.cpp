@@ -3,7 +3,7 @@
 #include "cpp-parse.tab.hh"
 #include "cpp-lexer.h"
 #include <iostream>
-#include "ptr_map.h"
+#include "../ptr_map.h"
 #include "runtime.h"
 using namespace std;
 
