@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
-EXEEXT = .exe
+EXEEXT = 
 
 # mingw
-LIBTOOL = ./libtool
+LIBTOOL = libtool
 
 
 # 共用ライブラリは拡張子 .la; 'lib' で始まること.
