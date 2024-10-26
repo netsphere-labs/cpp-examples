@@ -1,0 +1,8 @@
+LIBRARY mylib
+
+EXPORTS
+    make_b
+    b_insert_str
+    b_find
+    b_free
+
