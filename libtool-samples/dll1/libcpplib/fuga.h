@@ -43,16 +43,32 @@ namespace hoge {
   typedef std::u16string UniString;
 #endif
 
-class DLL_PUBLIC fuga
+  
+class DLL_PUBLIC Fuga
 {
 public:
     // string があるので constexpr コンストラクタにできない
-    fuga(const UniString& s) noexcept;
+    Fuga(const UniString& s) noexcept;
+    virtual ~Fuga() { }
 
     UniString get() const { return _str; }
 
-private:    
+    virtual int f() const = 0;
+    
+private:
+    // primitive ではないメンバ
     UniString _str;
 };
 
+
+// 派生
+class DLL_PUBLIC Hage : public Fuga
+{
+public:
+    Hage(const UniString& s) noexcept: Fuga(s) { }
+
+    // c++20: virtual メソッドを constexpr でオーバライド可能になった.
+    constexpr int f() const override;
+};
+  
 } // namespace hoge

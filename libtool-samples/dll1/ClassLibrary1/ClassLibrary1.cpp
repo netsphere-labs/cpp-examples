@@ -20,12 +20,13 @@ See https://learn.microsoft.com/ja-jp/cpp/dotnet/overview-of-marshaling-in-cpp?v
 namespace ClassLibrary1 {
 
 // コンストラクタ
+//template <class T>
 FugaWrap::FugaWrap(String^ cs_str)
 {
     Console::WriteLine("enter FugaWrap::FugaWrap()");
 
     std::wstring cpp_str = msclr::interop::marshal_as<std::wstring>(cs_str);
-    _ptr = new hoge::fuga(cpp_str);
+    _ptr = new hoge::Hage(cpp_str);
 }
 
 /*
@@ -54,6 +55,7 @@ protected override void Dispose(bool disposing) {
 
 // デストラクタ.
 // using() から抜けるときに呼び出されるのはこっち. マネージとアンマネージの両方を解放
+//template <class T>
 FugaWrap::~FugaWrap()
 {
     Console::WriteLine("enter FugaWrap::~FugaWrap()");
@@ -66,6 +68,7 @@ FugaWrap::~FugaWrap()
 // ファイナライザ
 // GC が発生するときに呼び出される「ことがある」. 
 // TODO: アンマネージ「だけ」解放。マネージはGCが解放
+//template <class T>
 FugaWrap::!FugaWrap()
 {
     Console::WriteLine("enter FugaWrap::!FugaWrap()");
@@ -74,11 +77,17 @@ FugaWrap::!FugaWrap()
     delete _ptr; _ptr = nullptr;
 }
 
+//template <class T>
 String^ FugaWrap::get()
 {
     // C++ -> C#
     String^ ret = msclr::interop::marshal_as<String^>(_ptr->get());
     return ret;
+}
+
+int FugaWrap::f()
+{
+    return _ptr->f();
 }
 
 } // namespace ClassLibrary1

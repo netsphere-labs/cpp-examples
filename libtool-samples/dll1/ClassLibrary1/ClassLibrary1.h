@@ -4,19 +4,22 @@
 
 namespace ClassLibrary1 {
 
+//template<typename T>
 public ref class FugaWrap
 {
 public:
     FugaWrap(System::String^ cs_str);
 
-    ~FugaWrap();
+    System::String^ get();
 
+    int f() ;
+
+    ~FugaWrap();
     !FugaWrap();
 
-    System::String^ get() ;
 
 private:
-    hoge::fuga* _ptr;
+    hoge::Fuga* _ptr;
 };
 
 } // namespace ClassLibrary1

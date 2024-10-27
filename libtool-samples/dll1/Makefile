@@ -1,13 +1,13 @@
 # -*- coding:utf-8 -*-
 
-EXEEXT = 
+EXEEXT = .exe
 
 # mingw: libtool の再インストール
 #LIBTOOL = /usr/bin/libtool
 LIBTOOL = libtool
 
 # 共用ライブラリは拡張子 .la; 'lib' で始まること.
-TARGETS = libmydll.la mydll_test$(EXEEXT)
+TARGETS = mydll_test$(EXEEXT)
 
 # See https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
 #     Compiler Options Hardening Guide for C and C++
@@ -38,10 +38,10 @@ mydll.lo: mydll.cpp mydll.h
 libmydll.la: mydll.lo
 	$(LIBTOOL) --tag=CXX $(LIBTOOLFLAGS) --mode=link $(CXXLD) $(LDFLAGS) $(LDLIBS) -version-info 3:1:2 -no-undefined -rpath /tmp/hoge/lib   -o $@  $^
 
-mydll_test$(EXEEXT): mydll_test.o libmydll.la
+mydll_test$(EXEEXT): mydll_test.o libcpplib/libmydll.la
 	$(LIBTOOL) --tag=CXX $(LIBTOOLFLAGS) --mode=link $(CXXLD) $(LDFLAGS) $(LDLIBS) -o $@ $^
 
-mydll_test.o: mydll_test.cpp mydll.h
+mydll_test.o: mydll_test.cpp libcpplib/fuga.h
 
 
 clean:

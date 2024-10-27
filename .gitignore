@@ -7,3 +7,12 @@
 
 CMakeFiles/
 CMakeCache.txt
+
+# msvc
+.vs/
+obj/
+Debug/
+Release/
+.libs/
+*.exe
+packages/
