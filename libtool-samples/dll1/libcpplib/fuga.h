@@ -68,7 +68,13 @@ public:
     Hage(const UniString& s) noexcept: Fuga(s) { }
 
     // c++20: virtual メソッドを constexpr でオーバライド可能になった.
+    // gcc 13 では, -std=c++20 を指定してもリンクエラー.
+    // gcc 14 は OK.
+#if __GNUC__ >= 14
     constexpr int f() const override;
+#else
+    int f() const override;
+#endif
 };
   
 } // namespace hoge

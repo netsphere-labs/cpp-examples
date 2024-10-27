@@ -12,7 +12,7 @@ TARGETS = libmydll.la
 # See https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
 #     Compiler Options Hardening Guide for C and C++
 
-CXXFLAGS = -fconstexpr-ops-limit=2147483647 -DLIBCPPLIB_EXPORTS -Wall -Wextra -Wno-unused-parameter -g3    \
+CXXFLAGS = -std=c++20 -fconstexpr-ops-limit=2147483647 -DLIBCPPLIB_EXPORTS -Wall -Wextra -Wno-unused-parameter -g3    \
     -O2 -Wformat -Wformat=2 -Wconversion -Wimplicit-fallthrough \
     -Werror=format-security \
     -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 \
