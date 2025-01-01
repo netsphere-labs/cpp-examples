@@ -43,7 +43,7 @@ Web上の記事も多い。サンプルプログラムの例; <a href="https://g
 
 同様のネタ; <a href="https://codezine.jp/article/detail/9421">疎行列の計算を実装してグラフ理論をかじってみる</a>
 
-<img src="graph.avif" />
+<img src="graph.avif" width="320" />
 
 記事中で出てくる半環 semi-ring は, いくつかの性質を満たす加法 (和) と乗法 (積) を持つ集合.
 トロピカル半環は, 乗法を通常の加算, 加法を min() とする。加法の単位元 (零元) は∞, 乗法の単位元は 0. min-plus semiring とも呼ばれる。
